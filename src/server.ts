@@ -3,19 +3,10 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import * as fs from 'node:fs/promises';
 
-const server = new McpServer(
-  {
-    name: 'My First MCP Server',
-    version: '1.0.0',
-  },
-  {
-    capabilities: {
-      resources: {},
-      tools: {},
-      prompts: {},
-    },
-  }
-);
+const server = new McpServer({
+  name: 'My First MCP Server',
+  version: '1.0.0',
+});
 
 server.registerTool(
   'create_user',
@@ -46,6 +37,71 @@ server.registerTool(
     } catch (e) {
       return {
         content: [{ type: 'text', text: 'Error creating a user' }],
+      };
+    }
+  }
+);
+
+server.registerTool(
+  'create-random-user',
+  {
+    title: 'Create a random user',
+    description: 'Create a random user with fake details',
+    annotations: {
+      title: 'Create Random User',
+      readOnlyHint: false,
+      destructiveHint: false,
+      idempotentHint: false,
+      openWorldHint: true,
+    },
+  },
+  async () => {
+    // run a prompt on AI to generate fake data
+    const res = await server.server.createMessage({
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text: 'Generate fake user data. The user should have a realistic name, email, address, and phone number. Return this data as a JSON object with no other text or formatter so it can be used with JSON.parse.',
+          },
+        },
+      ],
+      maxTokens: 1024,
+    });
+
+    if (res.content.type !== 'text') {
+      return {
+        content: [{ type: 'text' as const, text: 'Failed to generate user data' }],
+      };
+    }
+
+    try {
+      const fakeUser = JSON.parse(
+        res.content.text
+          .trim()
+          .replace(/^```json/, '')
+          .replace(/```$/, '')
+          .trim()
+      );
+
+      const id = await createUser(fakeUser);
+      return {
+        content: [
+          {
+            type: 'text' as const,
+            text: `User ${id} created successfully`,
+          },
+        ],
+      };
+    } catch (e) {
+      return {
+        content: [
+          {
+            type: 'text' as const,
+            text: 'Error generating fake user',
+          },
+        ],
       };
     }
   }

@@ -75,5 +75,12 @@
     "email": "fazley.ahmed@example.com",
     "address": "456 Main Street, Boston, MA 02101",
     "phone": "+1-555-9876"
+  },
+  {
+    "id": 12,
+    "name": "Sarah Martinez",
+    "email": "sarah.martinez@example.com",
+    "address": "742 Evergreen Terrace, Portland, OR 97204",
+    "phone": "+1-555-3142"
   }
 ]
