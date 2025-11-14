@@ -114,6 +114,33 @@ server.registerResource(
   }
 );
 
+server.registerPrompt(
+  'generate-fake-user',
+  {
+    title: 'Generate Fake User',
+    description: 'Generate a fake user based on given name',
+    argsSchema: {
+      name: z.string(),
+    },
+  },
+  async ({ name }) => {
+    return {
+      messages: [
+        {
+          role: 'user',
+          content: {
+            type: 'text',
+            text:
+              'Generate a fake user details for the name ' +
+              name +
+              ' including email, address, and phone number. Respond in JSON format.',
+          },
+        },
+      ],
+    };
+  }
+);
+
 async function createUser(user: { name: string; email: string; address: string; phone: string }) {
   const users = await import('./data/users.json', {
     with: { type: 'json' },

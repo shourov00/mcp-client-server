@@ -68,5 +68,12 @@
     "email": "rayhan@kodescape.com",
     "address": "dhaka",
     "phone": "2304293324"
+  },
+  {
+    "id": 11,
+    "name": "Fazley Ahmed",
+    "email": "fazley.ahmed@example.com",
+    "address": "456 Main Street, Boston, MA 02101",
+    "phone": "+1-555-9876"
   }
 ]
