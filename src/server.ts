@@ -189,7 +189,7 @@ server.registerPrompt(
             text:
               'Generate a fake user details for the name ' +
               name +
-              ' including email, address, and phone number. Respond in JSON format.',
+              ' including email, address, and phone number',
           },
         },
       ],
